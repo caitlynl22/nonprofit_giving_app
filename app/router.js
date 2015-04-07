@@ -5,5 +5,9 @@ var Router = Ember.Router.extend({
   location: config.locationType
 });
 
+Router.map(function() {
+  this.resource('organizations', { path: '/'});
+});
+
 export default Router.map(function() {
 });
