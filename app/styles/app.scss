@@ -1,0 +1,59 @@
+@import "modules/mixins";
+
+nav.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: rgba(50, 50, 50, 0.9);
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  z-index: 1;
+  ul {
+    list-style: none;
+    li {
+      display: inline-block;
+      &.brand {
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 40px;
+        font-weight: bold;
+        color: white;
+      }
+      &.options {
+        float: right;
+        margin: 7px 20px 0 0;
+        color: white;
+      }
+      a {
+        text-decoration: none;
+        color: white;
+      }
+    }
+  }
+}
+
+li.log-in {
+  float: right;
+  label {
+    display: inline;
+    color: gray;
+    font-size: 25px;
+    input {
+      margin: 5px;
+      border-radius: 2px;
+    }
+  }
+}
+
+body {
+  @include defaults;
+}
+
+.header-image {
+  background-image: url('/assets/images/owl-header.jpeg');
+  background-size: cover;
+  width: 100%;
+  height: 500px;
+  margin-top: 70px;
+}

@@ -2,6 +2,15 @@
 
 module.exports = function(environment) {
   var ENV = {
+    contentSecurityPolicy: {
+    'default-src': "'none'",
+    'script-src': "'self' liveReloadPort",
+    'font-src': "'self'",
+    'connect-src': "'self' http://localhost:3000 liveReloadPort",
+    'img-src': "'self'",
+    'style-src': "'self'",
+    'media-src': "'self'"
+    },
     modulePrefix: 'nonprofit-giving-app',
     environment: environment,
     baseURL: '/',
