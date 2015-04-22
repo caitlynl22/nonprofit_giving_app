@@ -8,5 +8,6 @@ export default DS.Model.extend({
   website: DS.attr('string'),
   address: DS.attr('string'),
   contact: DS.attr('string'),
-  ein: DS.attr('string')
+  ein: DS.attr('string'),
+  // campaigns: DS.hasMany('campaign')
 });

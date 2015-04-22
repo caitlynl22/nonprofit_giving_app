@@ -1,0 +1,7 @@
+<section id="main">
+  <ul id="organization_profiles">
+  {{#each}}
+    <li>{{#link-to 'organization_profiles.show' id}}  <img src="{{image_url}}" alt="{{name}}">{{/link-to}}</li>
+  {{/each}}
+  </ul>
+</section>

@@ -5,15 +5,15 @@ module.exports = function(environment) {
     contentSecurityPolicy: {
     'default-src': "'none'",
     'script-src': "'self' liveReloadPort",
-    'font-src': "'self'",
-    'connect-src': "'self' http://localhost:3000 liveReloadPort",
-    'img-src': "'self'",
-    'style-src': "'self'",
+    'font-src': "'self' fonts.gstatic.com",
+    'connect-src': "'self' http://nonprofit-api.herokuapp.com liveReloadPort",
+    'img-src': "*",
+    'style-src': "'self' https://fonts.googleapis.com fonts.gstatic.com",
     'media-src': "'self'"
     },
     modulePrefix: 'nonprofit-giving-app',
     environment: environment,
-    baseURL: '/',
+    baseURL: '/nonprofit_giving_app',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {

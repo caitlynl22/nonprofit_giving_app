@@ -6,14 +6,10 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.resource('organization_profiles', { path: '/'});
-  this.route('organization_profiles');
-});
-
-Router.map(function() {
+  this.resource('organization_profiles', { path: '/' }, function() {
+    this.route('show', { path: 'organization_profiles/:id' });
+  });
   this.resource('organizations', { path: '/account'});
 });
 
-export default Router.map(function() {
-  this.route('organizations');
-});
+export default Router;
