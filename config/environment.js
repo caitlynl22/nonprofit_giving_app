@@ -8,7 +8,7 @@ module.exports = function(environment) {
     'font-src': "'self' fonts.gstatic.com",
     'connect-src': "'self' http://nonprofit-api.herokuapp.com liveReloadPort",
     'img-src': "*",
-    'style-src': "'self' https://fonts.googleapis.com fonts.gstatic.com",
+    'style-src': "'self' unsafe-inline https://fonts.googleapis.com fonts.gstatic.com",
     'media-src': "'self'"
     },
     modulePrefix: 'nonprofit-giving-app',

@@ -1,7 +1,8 @@
-<section id="main">
+<section id="profiles">
+  <h1>Give Back is an easy way to find out what your favorite nonprofits are up to, and to discover new organizations doing work for causes you love.</h1>
   <ul id="organization_profiles">
   {{#each}}
-    <li>{{#link-to 'organization_profiles.show' id}}  <img src="{{image_url}}" alt="{{name}}">{{/link-to}}</li>
+    <li>{{#link-to 'organization_profiles.show' id}}  <img src="{{image_url}}" alt="{{name}}">{{/link-to}}<br>{{#link-to 'organization_profiles.show' id}}{{name}}{{/link-to}}</li>
   {{/each}}
   </ul>
 </section>

@@ -358,6 +358,47 @@ define('nonprofit-giving-app/templates/organization-profiles/index', ['exports']
           }
         };
       }());
+      var child1 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.11.1",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, content = hooks.content;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, null);
+            dom.insertBoundary(fragment, 0);
+            content(env, morph0, context, "name");
+            return fragment;
+          }
+        };
+      }());
       return {
         isHTMLBars: true,
         revision: "Ember@1.11.1",
@@ -369,6 +410,10 @@ define('nonprofit-giving-app/templates/organization-profiles/index', ['exports']
           var el1 = dom.createTextNode("    ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("li");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("br");
+          dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
@@ -396,8 +441,11 @@ define('nonprofit-giving-app/templates/organization-profiles/index', ['exports']
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
+          var element1 = dom.childAt(fragment, [1]);
+          var morph0 = dom.createMorphAt(element1,0,0);
+          var morph1 = dom.createMorphAt(element1,2,2);
           block(env, morph0, context, "link-to", ["organization_profiles.show", get(env, context, "id")], {}, child0, null);
+          block(env, morph1, context, "link-to", ["organization_profiles.show", get(env, context, "id")], {}, child1, null);
           return fragment;
         }
       };
@@ -411,7 +459,13 @@ define('nonprofit-giving-app/templates/organization-profiles/index', ['exports']
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("section");
-        dom.setAttribute(el1,"id","main");
+        dom.setAttribute(el1,"id","profiles");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Give Back is an easy way to find out what your favorite nonprofits are up to, and to discover new organizations doing work for causes you love.");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("ul");
@@ -450,7 +504,7 @@ define('nonprofit-giving-app/templates/organization-profiles/index', ['exports']
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1]),1,1);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3]),1,1);
         block(env, morph0, context, "each", [], {}, child0, null);
         return fragment;
       }
@@ -1017,7 +1071,7 @@ catch(err) {
 if (runningTests) {
   require("nonprofit-giving-app/tests/test-helper");
 } else {
-  require("nonprofit-giving-app/app")["default"].create({"name":"nonprofit-giving-app","version":"0.0.0.61d2f07d"});
+  require("nonprofit-giving-app/app")["default"].create({"name":"nonprofit-giving-app","version":"0.0.0.303dd438"});
 }
 
 /* jshint ignore:end */
