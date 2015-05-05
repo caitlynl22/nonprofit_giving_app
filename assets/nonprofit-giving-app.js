@@ -72,19 +72,17 @@ define('nonprofit-giving-app/initializers/export-application-global', ['exports'
   };
 
 });
-define('nonprofit-giving-app/models/campaign', function () {
+define('nonprofit-giving-app/models/campaign', ['exports', 'ember-data'], function (exports, DS) {
 
-	'use strict';
+  'use strict';
 
-	// import DS from 'ember-data';
-
-	// export default DS.Model.extend({
-	//   name: DS.attr('string'),
-	//   image_url: DS.attr('string'),
-	//   description: DS.attr('string'),
-	//   goal: DS.attr('number'),
-	//   organization_profile: DS.belongsTo('organization_profile')
-	// });
+  exports['default'] = DS['default'].Model.extend({
+    name: DS['default'].attr('string'),
+    image_url: DS['default'].attr('string'),
+    description: DS['default'].attr('string'),
+    goal: DS['default'].attr('number'),
+    organization_profile: DS['default'].belongsTo('organization_profile')
+  });
 
 });
 define('nonprofit-giving-app/models/organization-profile', ['exports', 'ember-data'], function (exports, DS) {
@@ -99,9 +97,9 @@ define('nonprofit-giving-app/models/organization-profile', ['exports', 'ember-da
     website: DS['default'].attr('string'),
     address: DS['default'].attr('string'),
     contact: DS['default'].attr('string'),
-    ein: DS['default'].attr('string') });
-
-  // campaigns: DS.hasMany('campaign')
+    ein: DS['default'].attr('string'),
+    campaigns: DS['default'].hasMany('campaign')
+  });
 
 });
 define('nonprofit-giving-app/models/organization', ['exports', 'ember-data'], function (exports, DS) {
@@ -165,9 +163,13 @@ define('nonprofit-giving-app/routes/organizations', ['exports', 'ember'], functi
 });
 define('nonprofit-giving-app/serializers/organization-profile', ['exports', 'ember-data'], function (exports, DS) {
 
-	'use strict';
+  'use strict';
 
-	exports['default'] = DS['default'].ActiveModelSerializer.extend({});
+  exports['default'] = DS['default'].ActiveModelSerializer.extend(DS['default'].EmbeddedRecordsMixin, {
+    attrs: {
+      campaigns: { embedded: 'always' }
+    }
+  });
 
 });
 define('nonprofit-giving-app/templates/application', ['exports'], function (exports) {
@@ -517,6 +519,84 @@ define('nonprofit-giving-app/templates/organization-profiles/show', ['exports'],
   'use strict';
 
   exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.11.1",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","campaign-show");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h5");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h6");
+          var el3 = dom.createTextNode("Goal: $");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("p");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("a");
+          dom.setAttribute(el2,"href","");
+          var el3 = dom.createTextNode("Donate");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, content = hooks.content;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var element0 = dom.childAt(fragment, [1]);
+          var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
+          var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
+          var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),0,0);
+          content(env, morph0, context, "campaign.name");
+          content(env, morph1, context, "campaign.goal");
+          content(env, morph2, context, "campaign.description");
+          return fragment;
+        }
+      };
+    }());
     return {
       isHTMLBars: true,
       revision: "Ember@1.11.1",
@@ -526,7 +606,11 @@ define('nonprofit-giving-app/templates/organization-profiles/show', ['exports'],
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("section");
-        dom.setAttribute(el1,"id","main");
+        dom.setAttribute(el1,"id","profile-show");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("img");
+        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("h1");
@@ -536,6 +620,8 @@ define('nonprofit-giving-app/templates/organization-profiles/show', ['exports'],
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("h2");
+        var el3 = dom.createTextNode("Mission: ");
+        dom.appendChild(el2, el3);
         var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -586,8 +672,18 @@ define('nonprofit-giving-app/templates/organization-profiles/show', ['exports'],
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("aside");
-        dom.setAttribute(el2,"id","campaigns");
-        var el3 = dom.createTextNode("\n  ");
+        dom.setAttribute(el2,"class","campaigns");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h4");
+        var el4 = dom.createTextNode("Campaigns");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
@@ -599,7 +695,7 @@ define('nonprofit-giving-app/templates/organization-profiles/show', ['exports'],
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, content = hooks.content;
+        var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, content = hooks.content, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -617,15 +713,21 @@ define('nonprofit-giving-app/templates/organization-profiles/show', ['exports'],
         } else {
           fragment = this.build(dom);
         }
-        var element0 = dom.childAt(fragment, [0]);
-        var element1 = dom.childAt(element0, [9]);
-        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
-        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
-        var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),0,0);
-        var morph3 = dom.createMorphAt(dom.childAt(element1, [1]),0,0);
-        var morph4 = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
-        var morph5 = dom.createMorphAt(dom.childAt(element1, [5]),0,0);
-        var morph6 = dom.createMorphAt(dom.childAt(element0, [11]),1,1);
+        var element1 = dom.childAt(fragment, [0]);
+        var element2 = dom.childAt(element1, [1]);
+        var element3 = dom.childAt(element1, [11]);
+        var attrMorph0 = dom.createAttrMorph(element2, 'src');
+        var attrMorph1 = dom.createAttrMorph(element2, 'alt');
+        var morph0 = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [5]),1,1);
+        var morph2 = dom.createMorphAt(dom.childAt(element1, [7]),0,0);
+        var morph3 = dom.createMorphAt(dom.childAt(element3, [1]),0,0);
+        var morph4 = dom.createMorphAt(dom.childAt(element3, [3]),0,0);
+        var morph5 = dom.createMorphAt(dom.childAt(element3, [5]),0,0);
+        var morph6 = dom.createMorphAt(dom.childAt(element1, [13]),1,1);
+        var morph7 = dom.createMorphAt(dom.childAt(element1, [15]),3,3);
+        attribute(env, attrMorph0, element2, "src", concat(env, [get(env, context, "model.image_url")]));
+        attribute(env, attrMorph1, element2, "alt", concat(env, [get(env, context, "model.name")]));
         content(env, morph0, context, "model.name");
         content(env, morph1, context, "model.mission");
         content(env, morph2, context, "model.description");
@@ -633,6 +735,7 @@ define('nonprofit-giving-app/templates/organization-profiles/show', ['exports'],
         content(env, morph4, context, "model.address");
         content(env, morph5, context, "model.contact");
         content(env, morph6, context, "model.ein");
+        block(env, morph7, context, "each", [get(env, context, "model.campaigns")], {"keyword": "campaign"}, child0, null);
         return fragment;
       }
     };
@@ -1071,7 +1174,7 @@ catch(err) {
 if (runningTests) {
   require("nonprofit-giving-app/tests/test-helper");
 } else {
-  require("nonprofit-giving-app/app")["default"].create({"name":"nonprofit-giving-app","version":"0.0.0.303dd438"});
+  require("nonprofit-giving-app/app")["default"].create({"name":"nonprofit-giving-app","version":"0.0.0.6ca18a96"});
 }
 
 /* jshint ignore:end */
