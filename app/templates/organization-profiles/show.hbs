@@ -1,6 +1,7 @@
-<section id="main">
+<section id="profile-show">
+  <img src="{{model.image_url}}" alt="{{model.name}}">
   <h1>{{model.name}}</h1>
-  <h2>{{model.mission}}</h2>
+  <h2>Mission: {{model.mission}}</h2>
   <p>{{model.description}}</p>
   <h3>Contact Information:</h3>
   <ul>
@@ -9,11 +10,15 @@
     <li>{{model.contact}}</li>
   </ul>
   <p>EIN: {{model.ein}}</p>
-  <aside id="campaigns">
-{{!--     {{#each campaign in model.campaigns}}
-      <h1>{{campaign.name}}</h1>
-      <h2>{{campaign.goal}}</h2>
+  <aside class="campaigns">
+    <h4>Campaigns</h4>
+    {{#each campaign in model.campaigns}}
+      <div class="campaign-show">
+      <h5>{{campaign.name}}</h5>
+      <h6>Goal: ${{campaign.goal}}</h6>
       <p>{{campaign.description}}</p>
-    {{/each}} --}}
+      <a href="">Donate</a>
+      </div>
+    {{/each}}
   </aside>
 </section>

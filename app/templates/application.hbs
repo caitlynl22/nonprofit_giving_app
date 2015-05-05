@@ -2,7 +2,11 @@
   <ul>
     <li class="brand">{{#link-to 'organization_profiles.index'}}Give Back{{/link-to}}</li>
     <li class="options">Register</li>
-    <li class="options">User Sign In</li>
+    <li class="options">{{#if session.isAuthenticated}}
+      <a {{ action 'invalidateSession' }}>Logout</a>
+    {{else}}
+      {{#link-to 'login'}}User Login{{/link-to}}
+    {{/if}}</li>
     <li class="options">Organization Sign In</li>
     <li class="options">Find a Cause</li>
   </ul>

@@ -10,6 +10,7 @@ Router.map(function() {
     this.route('show', { path: 'organization_profiles/:id' });
   });
   this.resource('organizations', { path: '/account'});
+  this.route('login');
 });
 
 export default Router;

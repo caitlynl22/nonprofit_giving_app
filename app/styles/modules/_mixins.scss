@@ -4,3 +4,14 @@
   position: relative;
   box-sizing: border-box;
 }
+
+@mixin button {
+  padding: 10px 25px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: $medium-font-size;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  background: #444444;
+}

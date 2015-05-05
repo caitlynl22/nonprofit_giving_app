@@ -1,4 +1,5 @@
 @import "modules/mixins";
+@import "modules/variables";
 
 body {
   @include defaults;
@@ -76,9 +77,6 @@ ul#organization_profiles {
       width: 370px;
       height: 245px;
       margin: 5px;
-      &:hover {
-        filter: grayscale(90%);
-      }
     }
     a {
       font-family: Helvetica, Arial, sans-serif;
@@ -87,6 +85,59 @@ ul#organization_profiles {
       text-decoration: none;
       &:hover {
         text-decoration: underline;
+      }
+    }
+  }
+}
+
+#profile-show {
+  margin: 30px;
+  font-size: $medium-font-size;
+  img {
+    width: 65%;
+    height: auto;
+  }
+  h1 {
+    font-size: $x-large-font-size;
+  }
+  h2 {
+    font-size: $large-font-size;
+  }
+  p {
+    font-size: 24px;
+  }
+
+  .campaigns {
+    position: absolute;
+    right: 0;
+    top: 600px;
+    width: 30%;
+    border-left: 1px solid gray;
+    padding: 20px;
+    h4 {
+      font-size: $large-font-size;
+      padding: 20px;
+      border: inset;
+      text-align: center;
+    }
+    .campaign-show {
+      margin: 30px 0;
+      h5 {
+        font-size: 1.25em;
+        margin: 40px 0 30px 0;
+      }
+      h6 {
+        font-size: $medium-font-size;
+        font-weight: normal;
+        margin: 30px 0;
+      }
+      p {
+        font-size: 0.9em;
+        margin-bottom: 30px;
+      }
+      a {
+        @include button;
+        margin: 15px;
       }
     }
   }
