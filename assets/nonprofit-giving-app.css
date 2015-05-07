@@ -47,10 +47,9 @@ nav.navbar {
     font-size: 30px;
     margin: 30px 50px 0 50px;
     font-weight: normal;
-    background: #AAAAAA;
     padding: 20px 50px;
     color: #444444;
-    border: 1px black solid; }
+    border: inset; }
 
 ul#organization_profiles {
   margin: 0;

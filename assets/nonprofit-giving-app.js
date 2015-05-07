@@ -30,6 +30,15 @@ define('nonprofit-giving-app/app', ['exports', 'ember', 'ember/resolver', 'ember
   exports['default'] = App;
 
 });
+define('nonprofit-giving-app/controllers/login', ['exports', 'ember', 'simple-auth/mixins/login-controller-mixin'], function (exports, Ember, LoginControllerMixin) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Controller.extend(LoginControllerMixin['default'], {
+    authenticator: 'simple-auth-authenticator:devise'
+  });
+
+});
 define('nonprofit-giving-app/initializers/app-version', ['exports', 'nonprofit-giving-app/config/environment', 'ember'], function (exports, config, Ember) {
 
   'use strict';
@@ -69,6 +78,34 @@ define('nonprofit-giving-app/initializers/export-application-global', ['exports'
     name: 'export-application-global',
 
     initialize: initialize
+  };
+
+});
+define('nonprofit-giving-app/initializers/simple-auth-devise', ['exports', 'simple-auth-devise/configuration', 'simple-auth-devise/authenticators/devise', 'simple-auth-devise/authorizers/devise', 'nonprofit-giving-app/config/environment'], function (exports, Configuration, Authenticator, Authorizer, ENV) {
+
+  'use strict';
+
+  exports['default'] = {
+    name: 'simple-auth-devise',
+    before: 'simple-auth',
+    initialize: function initialize(container, application) {
+      Configuration['default'].load(container, ENV['default']['simple-auth-devise'] || {});
+      container.register('simple-auth-authorizer:devise', Authorizer['default']);
+      container.register('simple-auth-authenticator:devise', Authenticator['default']);
+    }
+  };
+
+});
+define('nonprofit-giving-app/initializers/simple-auth', ['exports', 'simple-auth/configuration', 'simple-auth/setup', 'nonprofit-giving-app/config/environment'], function (exports, Configuration, setup, ENV) {
+
+  'use strict';
+
+  exports['default'] = {
+    name: 'simple-auth',
+    initialize: function initialize(container, application) {
+      Configuration['default'].load(container, ENV['default']['simple-auth'] || {});
+      setup['default'](container, application);
+    }
   };
 
 });
@@ -121,11 +158,27 @@ define('nonprofit-giving-app/router', ['exports', 'ember', 'nonprofit-giving-app
   Router.map(function () {
     this.resource('organization_profiles', { path: '/' }, function () {
       this.route('show', { path: 'organization_profiles/:id' });
+      this.route('donate', { path: 'organization_profiles/:id/donate' });
     });
     this.resource('organizations', { path: '/account' });
+    this.route('login');
   });
 
   exports['default'] = Router;
+
+});
+define('nonprofit-giving-app/routes/application', ['exports', 'ember', 'simple-auth/mixins/application-route-mixin'], function (exports, Ember, ApplicationRouteMixin) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Route.extend(ApplicationRouteMixin['default']);
+
+});
+define('nonprofit-giving-app/routes/login', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Route.extend({});
 
 });
 define('nonprofit-giving-app/routes/organization-profiles', ['exports', 'ember'], function (exports, Ember) {
@@ -135,6 +188,17 @@ define('nonprofit-giving-app/routes/organization-profiles', ['exports', 'ember']
   exports['default'] = Ember['default'].Route.extend({
     model: function model() {
       return this.store.find('organization_profile');
+    }
+  });
+
+});
+define('nonprofit-giving-app/routes/organization-profiles/donate', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend(AuthenticatedRouteMixin['default'], {
+    model: function model(params) {
+      return this.store.find('organization_profile', params.id);
     }
   });
 
@@ -213,6 +277,130 @@ define('nonprofit-giving-app/templates/application', ['exports'], function (expo
         }
       };
     }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.11.1",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("\n      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("a");
+          var el2 = dom.createTextNode("Logout");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, element = hooks.element;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var element0 = dom.childAt(fragment, [1]);
+          element(env, element0, context, "action", ["invalidateSession"], {});
+          return fragment;
+        }
+      };
+    }());
+    var child2 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.11.1",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("User Login");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.11.1",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n    ");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          block(env, morph0, context, "link-to", ["login"], {}, child0, null);
+          return fragment;
+        }
+      };
+    }());
     return {
       isHTMLBars: true,
       revision: "Ember@1.11.1",
@@ -244,7 +432,7 @@ define('nonprofit-giving-app/templates/application', ['exports'], function (expo
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
         dom.setAttribute(el3,"class","options");
-        var el4 = dom.createTextNode("User Sign In");
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
@@ -282,7 +470,7 @@ define('nonprofit-giving-app/templates/application', ['exports'], function (expo
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, block = hooks.block, content = hooks.content;
+        var hooks = env.hooks, block = hooks.block, get = hooks.get, content = hooks.content;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -300,10 +488,153 @@ define('nonprofit-giving-app/templates/application', ['exports'], function (expo
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1, 1]),0,0);
-        var morph1 = dom.createMorphAt(fragment,4,4,contextualElement);
+        var element1 = dom.childAt(fragment, [0, 1]);
+        var morph0 = dom.createMorphAt(dom.childAt(element1, [1]),0,0);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [5]),0,0);
+        var morph2 = dom.createMorphAt(fragment,4,4,contextualElement);
         block(env, morph0, context, "link-to", ["organization_profiles.index"], {}, child0, null);
-        content(env, morph1, context, "outlet");
+        block(env, morph1, context, "if", [get(env, context, "session.isAuthenticated")], {}, child1, child2);
+        content(env, morph2, context, "outlet");
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('nonprofit-giving-app/templates/login', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.11.1",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("form");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("label");
+        dom.setAttribute(el2,"for","identification");
+        var el3 = dom.createTextNode("Login");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("label");
+        dom.setAttribute(el2,"for","password");
+        var el3 = dom.createTextNode("Password");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2,"type","submit");
+        var el3 = dom.createTextNode("Login");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, element = hooks.element, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        var morph0 = dom.createMorphAt(element0,3,3);
+        var morph1 = dom.createMorphAt(element0,7,7);
+        element(env, element0, context, "action", ["authenticate"], {"on": "submit"});
+        inline(env, morph0, context, "input", [], {"value": get(env, context, "identification"), "placeholder": "Enter Login"});
+        inline(env, morph1, context, "input", [], {"value": get(env, context, "password"), "placeholder": "Enter Password", "type": "password"});
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('nonprofit-giving-app/templates/organization-profiles/donate', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.11.1",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("section");
+        dom.setAttribute(el1,"id","profile-donate");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h1");
+        var el3 = dom.createTextNode("Donate to ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1]),1,1);
+        content(env, morph0, context, "model.name");
         return fragment;
       }
     };
@@ -520,6 +851,42 @@ define('nonprofit-giving-app/templates/organization-profiles/show', ['exports'],
 
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.11.1",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("Donate");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            return fragment;
+          }
+        };
+      }());
       return {
         isHTMLBars: true,
         revision: "Ember@1.11.1",
@@ -554,10 +921,7 @@ define('nonprofit-giving-app/templates/organization-profiles/show', ['exports'],
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n      ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createElement("a");
-          dom.setAttribute(el2,"href","");
-          var el3 = dom.createTextNode("Donate");
-          dom.appendChild(el2, el3);
+          var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n      ");
           dom.appendChild(el1, el2);
@@ -568,7 +932,7 @@ define('nonprofit-giving-app/templates/organization-profiles/show', ['exports'],
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, content = hooks.content;
+          var hooks = env.hooks, content = hooks.content, get = hooks.get, block = hooks.block;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -590,9 +954,11 @@ define('nonprofit-giving-app/templates/organization-profiles/show', ['exports'],
           var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
           var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
           var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),0,0);
+          var morph3 = dom.createMorphAt(element0,7,7);
           content(env, morph0, context, "campaign.name");
           content(env, morph1, context, "campaign.goal");
           content(env, morph2, context, "campaign.description");
+          block(env, morph3, context, "link-to", ["organization_profiles.donate", get(env, context, "id")], {}, child0, null);
           return fragment;
         }
       };
@@ -809,6 +1175,16 @@ define('nonprofit-giving-app/tests/app.jshint', function () {
   });
 
 });
+define('nonprofit-giving-app/tests/controllers/login.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - controllers');
+  test('controllers/login.js should pass jshint', function() { 
+    ok(true, 'controllers/login.js should pass jshint.'); 
+  });
+
+});
 define('nonprofit-giving-app/tests/helpers/resolver', ['exports', 'ember/resolver', 'nonprofit-giving-app/config/environment'], function (exports, Resolver, config) {
 
   'use strict';
@@ -906,6 +1282,26 @@ define('nonprofit-giving-app/tests/router.jshint', function () {
   });
 
 });
+define('nonprofit-giving-app/tests/routes/application.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - routes');
+  test('routes/application.js should pass jshint', function() { 
+    ok(true, 'routes/application.js should pass jshint.'); 
+  });
+
+});
+define('nonprofit-giving-app/tests/routes/login.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - routes');
+  test('routes/login.js should pass jshint', function() { 
+    ok(true, 'routes/login.js should pass jshint.'); 
+  });
+
+});
 define('nonprofit-giving-app/tests/routes/organization-profiles.jshint', function () {
 
   'use strict';
@@ -913,6 +1309,16 @@ define('nonprofit-giving-app/tests/routes/organization-profiles.jshint', functio
   module('JSHint - routes');
   test('routes/organization-profiles.js should pass jshint', function() { 
     ok(true, 'routes/organization-profiles.js should pass jshint.'); 
+  });
+
+});
+define('nonprofit-giving-app/tests/routes/organization-profiles/donate.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - routes/organization-profiles');
+  test('routes/organization-profiles/donate.js should pass jshint', function() { 
+    ok(true, 'routes/organization-profiles/donate.js should pass jshint.'); 
   });
 
 });
@@ -986,6 +1392,32 @@ define('nonprofit-giving-app/tests/unit/adapters/application-test.jshint', funct
   module('JSHint - unit/adapters');
   test('unit/adapters/application-test.js should pass jshint', function() { 
     ok(true, 'unit/adapters/application-test.js should pass jshint.'); 
+  });
+
+});
+define('nonprofit-giving-app/tests/unit/controllers/login-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor('controller:login', {});
+
+  // Replace this with your real tests.
+  ember_qunit.test('it exists', function (assert) {
+    var controller = this.subject();
+    assert.ok(controller);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('nonprofit-giving-app/tests/unit/controllers/login-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/controllers');
+  test('unit/controllers/login-test.js should pass jshint', function() { 
+    ok(true, 'unit/controllers/login-test.js should pass jshint.'); 
   });
 
 });
@@ -1064,6 +1496,81 @@ define('nonprofit-giving-app/tests/unit/models/organization-test.jshint', functi
   module('JSHint - unit/models');
   test('unit/models/organization-test.js should pass jshint', function() { 
     ok(true, 'unit/models/organization-test.js should pass jshint.'); 
+  });
+
+});
+define('nonprofit-giving-app/tests/unit/routes/application-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor('route:application', {});
+
+  ember_qunit.test('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('nonprofit-giving-app/tests/unit/routes/application-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/routes');
+  test('unit/routes/application-test.js should pass jshint', function() { 
+    ok(true, 'unit/routes/application-test.js should pass jshint.'); 
+  });
+
+});
+define('nonprofit-giving-app/tests/unit/routes/donate-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor('route:donate', {});
+
+  ember_qunit.test('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('nonprofit-giving-app/tests/unit/routes/donate-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/routes');
+  test('unit/routes/donate-test.js should pass jshint', function() { 
+    ok(true, 'unit/routes/donate-test.js should pass jshint.'); 
+  });
+
+});
+define('nonprofit-giving-app/tests/unit/routes/login-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor('route:login', {});
+
+  ember_qunit.test('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('nonprofit-giving-app/tests/unit/routes/login-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/routes');
+  test('unit/routes/login-test.js should pass jshint', function() { 
+    ok(true, 'unit/routes/login-test.js should pass jshint.'); 
   });
 
 });
@@ -1174,7 +1681,7 @@ catch(err) {
 if (runningTests) {
   require("nonprofit-giving-app/tests/test-helper");
 } else {
-  require("nonprofit-giving-app/app")["default"].create({"name":"nonprofit-giving-app","version":"0.0.0.6ca18a96"});
+  require("nonprofit-giving-app/app")["default"].create({"LOG_TRANSITIONS":true,"name":"nonprofit-giving-app","version":"0.0.0.7678c48b"});
 }
 
 /* jshint ignore:end */
